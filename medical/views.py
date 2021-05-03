@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def home(request):
-    return render(request,'home.html')
+    return render(request,'index.html')
 @login_required
 def addMedicines(request):
     obj = MedicinesForm()
@@ -18,7 +18,7 @@ def addMedicines(request):
         if obj.is_valid():
             obj.save()
 
-            return redirect('index')
+            return redirect('home')
 
         else:
             return HttpResponse("<h1>something is wrong</h1>")
@@ -37,7 +37,7 @@ def update(request,medicnes_id):
 
     except Medicines.DoesNotExists:
         #return HttpResponse("Something is wrong")
-        return redirect('index')
+        return redirect('home')
 
     else:
         Medicines_form = MedicinesForm(request.POST or None ,instance = medicine_select)
@@ -52,7 +52,7 @@ def update(request,medicnes_id):
                     if os.path.exists(old_img):
                         os.remove(old_img)  
                         form.save() 
-            return redirect('index')
+            return redirect('home')
         return render(request,'update.html',{'form':Medicines_form})                
 
 
@@ -62,10 +62,10 @@ def delete(request,medicnes_id):
         medicine_select = Medicines.objects.get(id = medicnes_id)
         
     except Medicines.DoesNotExists:
-        return redirect('index')
+        return redirect('home')
     
     medicine_select.delete()  
-    return redirect('index')    
+    return redirect('home')    
 
 
 #def login(request):
